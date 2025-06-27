@@ -14,7 +14,7 @@ RUN npm install
 COPY . .
 
 # Expor a porta na qual o backend vai rodar
-EXPOSE 3000
+EXPOSE 3333
 
 # Rodar a aplicação Node.js
 CMD ["node", "index.js"]
