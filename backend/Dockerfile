@@ -2,7 +2,7 @@
 FROM node:16-alpine
 
 # Definindo o diretório de trabalho dentro do container
-WORKDIR /backend
+WORKDIR .
 
 # Copiar o package.json e o package-lock.json para o container
 COPY package*.json ./
