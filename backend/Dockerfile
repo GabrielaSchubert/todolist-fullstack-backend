@@ -2,7 +2,7 @@
 FROM node:16-alpine
 
 # Definindo o diretório de trabalho dentro do container
-WORKDIR /usr/src/app
+WORKDIR /backend
 
 # Copiar o package.json e o package-lock.json para o container
 COPY package*.json ./
@@ -14,7 +14,7 @@ RUN npm install
 COPY . .
 
 # Expor a porta na qual o backend vai rodar
-EXPOSE 3333
+EXPOSE 8000
 
 # Rodar a aplicação Node.js
-CMD ["node", "index.js"]
+CMD ["node", "src/server.js"]
