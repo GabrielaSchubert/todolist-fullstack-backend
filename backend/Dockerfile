@@ -2,10 +2,10 @@
 FROM node:16-alpine
 
 # Definindo o diretório de trabalho dentro do container
-WORKDIR .
+WORKDIR /usr/app
 
 # Copiar o package.json e o package-lock.json para o container
-COPY package*.json ./
+COPY ./ /usr/app
 
 # Instalar as dependências do projeto
 RUN npm install
@@ -17,4 +17,4 @@ COPY . .
 EXPOSE 8000
 
 # Rodar a aplicação Node.js
-CMD ["node", "src/server.js"]
+CMD ["npm", "start"]
