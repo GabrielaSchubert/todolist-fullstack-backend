@@ -1,7 +1,7 @@
 FROM node:18
 WORKDIR /app
 COPY package*.json ./
-RUN npm install --production
+RUN npm install -g package.json
 COPY . .
-EXPOSE 3333
+EXPOSE 8000
 CMD ["node", "src/server.js"]
