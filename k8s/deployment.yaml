@@ -1,0 +1,36 @@
+apiVersion: apps/v1             # Versão da API do Kubernetes usada para Deployment
+kind: Deployment                # Tipo de recurso: Deployment cria e gerencia réplicas de pods
+metadata:
+  name: backend                 # Nome do Deployment
+  labels:
+    app: backend                # Rótulo usado para selecionar e identificar os pods desse Deployment
+
+spec:
+  replicas: 1                   # Número de réplicas (pods) desejadas
+  selector:
+    matchLabels:
+      app: backend              # Seleciona os pods com esse rótulo (deve coincidir com template.metadata.labels)
+  template:
+    metadata:
+      labels:
+        app: backend            # Rótulo que será atribuído aos pods criados
+    spec:
+      containers:
+        - name: backend         # Nome do contêiner
+          image: gabrielaschubert/backend:latest  # Imagem Docker do backend
+          ports:
+            - containerPort: 3333  # Porta que o contêiner escuta internamente
+          env:                    # Variáveis de ambiente que o app backend usará
+            - name: DB_HOST
+              value: "mysql"
+            - name: DB_PORT
+              value: "3306"
+            - name: DB_USER
+              value: "root"
+            - name: DB_PASS
+              valueFrom:          # Busca a senha do banco de dados de um Secret
+                secretKeyRef:
+                  name: mysql-secret  # Nome do Secret Kubernetes
+                  key: password       # Nome da chave dentro do Secret
+            - name: DB_NAME
+              value: "todolist"

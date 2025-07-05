@@ -4,36 +4,63 @@ on:
   push:
     branches:
       - main
+      - feature/test-docker
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+      # Faz o checkout do código do repositório
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v3
+      # Faz login no DockerHub usando credenciais secretas
+      - name: Login to DockerHub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-    - name: Cache Docker layers
-      uses: actions/cache@v3
-      with:
-        path: /tmp/.buildx-cache
-        key: ${{ runner.os }}-buildx-${{ github.sha }}
-        restore-keys: |
-          ${{ runner.os }}-buildx-
+      # Configura o QEMU para suportar compilações multi-plataforma
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
 
-    - name: Login to Docker Hub
-      uses: docker/login-action@v3
-      with:
-        username: ${{ secrets.DOCKER_USERNAME }}
-        password: ${{ secrets.DOCKER_TOKEN }} 
+      # Configura o Docker Buildx para compilar imagens multi-plataforma
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
 
-    - name: Build and push backend Docker image
-      uses: docker/build-push-action@v5
-      with:
-        context: .
-        file: ./backend/Dockerfile
-        push: true
-        tags: gabrielaschubert/backend:latest
+      # Constrói e envia a imagem Docker para o Docker Hub
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          tags: |
+            gabrielaschubert/backend:latest
+            gabrielaschubert/backend:${{ github.sha }}
+
+      # Configura o Kustomize para manipular a configuração Kubernetes
+      - name: Setup Kustomize
+        uses: imranismail/setup-kustomize@v2
+
+      # Atualiza o arquivo kustomization.yaml com a nova tag da imagem
+      - name: Update kustomization.yaml
+        run: |
+          cd k8s
+          kustomize edit set image gabrielaschubert/backend=gabrielaschubert/backend:${{ github.sha }}
+
+      # Faz commit das mudanças no kustomization.yaml
+      - name: Commit changes
+        run: |
+          git config --local user.name "GitHub Actions"
+          git config --local user.email "actions@github.com"
+          git add k8s/kustomization.yaml
+          git commit -m "Update backend image to ${{ github.sha }}" || echo "No changes to commit"
+
+      # Faz push das mudanças para o repositório GitHub
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref }}
