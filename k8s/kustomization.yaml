@@ -1,13 +1,12 @@
-apiVersion: kustomize.config.k8s.io/v1beta1  # Versão do Kustomize
-kind: Kustomization  # Tipo de recurso
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
 
 resources:
-  - deployment.yaml  # Definição do Deployment
-  - service.yaml  # Definição do Service
+- deployment.yaml
+- service.yaml
 
 images:
-  - name: gabrielaschubert/backend  # Nome da imagem Docker
-    newName: gabrielaschubert/backend  # (Opcional) Renomeia a imagem (não neste caso)
-    newTag: 744affa6df9ef48abf17a9f48d98f5e124c19aa1813d517653b472eb31693aa8  # SHA Digest da imagem
-apiVersion: kustomize.config.k8s.io/v1beta1  # Versão do Kustomize
-kind: Kustomization  # Tipo do recurso (Kustomization)
+- name: gabrielaschubert/backend
+  newName: gabrielaschubert/backend
+  newTag: dd61430fc91b9fac5e615a8d7ef74e86935e9a91
+apiVersion: kustomize.config.k8s.io/v1beta1
