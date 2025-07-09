@@ -1,36 +1,26 @@
-apiVersion: apps/v1             # Versão da API do Kubernetes usada para Deployment
-kind: Deployment                # Tipo de recurso: Deployment cria e gerencia réplicas de pods
+apiVersion: apps/v1               # Versão da API usada para criar o Deployment
+kind: Deployment                  # Tipo do recurso Kubernetes: Deployment
 metadata:
-  name: backend                 # Nome do Deployment
+  name: backend                   # Nome do Deployment
   labels:
-    app: backend                # Rótulo usado para selecionar e identificar os pods desse Deployment
-
+    app: backend                  # Rótulo para identificar e selecionar os pods desse Deployment
 spec:
-  replicas: 1                   # Número de réplicas (pods) desejadas
+  replicas: 1                    # Número de réplicas (pods) desejadas
   selector:
     matchLabels:
-      app: backend              # Seleciona os pods com esse rótulo (deve coincidir com template.metadata.labels)
+      app: backend               # Seleciona os pods que têm esse rótulo (deve combinar com template.metadata.labels)
   template:
     metadata:
       labels:
-        app: backend            # Rótulo que será atribuído aos pods criados
+        app: backend             # Rótulo aplicado nos pods criados por este Deployment
     spec:
       containers:
-        - name: backend         # Nome do contêiner
-          image: gabrielaschubert/backend:latest  # Imagem Docker do backend
+        - name: backend          # Nome do container dentro do pod
+          image: gabrielaschubert/backend:latest  # Imagem Docker que será usada para rodar o container
           ports:
-            - containerPort: 3333  # Porta que o contêiner escuta internamente
-          env:                    # Variáveis de ambiente que o app backend usará
-            - name: DB_HOST
-              value: "mysql"
-            - name: DB_PORT
-              value: "3306"
-            - name: DB_USER
-              value: "root"
-            - name: DB_PASS
-              valueFrom:          # Busca a senha do banco de dados de um Secret
-                secretKeyRef:
-                  name: mysql-secret  # Nome do Secret Kubernetes
-                  key: password       # Nome da chave dentro do Secret
-            - name: DB_NAME
-              value: "todolist"
+            - containerPort: 3333   # Porta interna do container exposta
+          env:
+            - name: DATABASE_HOST    # Variável de ambiente DATABASE_HOST usada dentro do container
+              value: mysql-service   # Valor definido para a variável DATABASE_HOST
+            - name: DATABASE_PORT    # Variável de ambiente DATABASE_PORT usada dentro do container
+              value: "3306"          # Valor definido para a variável DATABASE_PORT
