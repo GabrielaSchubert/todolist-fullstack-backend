@@ -8,5 +8,5 @@ resources:
 images:
 - name: gabrielaschubert/backend
   newName: gabrielaschubert/backend
-  newTag: dd61430fc91b9fac5e615a8d7ef74e86935e9a91
+  newTag: 4db9d8e9fbf7f2e3c04398434bd28d56da03a868
 apiVersion: kustomize.config.k8s.io/v1beta1
