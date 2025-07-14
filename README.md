@@ -98,5 +98,15 @@ $ npm start
 - <a href="https://www.youtube.com/@ManualdoDev"> YouTube
 - <a href="https://youtube.com/playlist?list=PLdtmpu_1ITQJ1Y2-ZBbE7ROP6u1kU0J5l">Playlist for this Project
 
-
-
+## Projeto de Fundamentos de Devops
+### Integrando uma aplicação fullstack (backend e frontend) com Docker, Kubernetes e ArgoCD
+**Utilize o projeto completo, a seguir estão os links dos outros repositórios integrados ao trabalho:**
+```bash
+# Clone o repositório frontend e backend
+$ git clone https://github.com/GabrielaSchubert/frontend-fullstack.git
+$ git clone https://github.com/GabrielaSchubert/todolist-fullstack-backend.git
+```
+# Clone o repositório packer-Devops-gabi
+$ git clone https://github.com/GabrielaSchubert/packerDevops-gabi.git
+```
+Após esses passos, siga o README.md do projeto **packer-Devops-gabi** (último link disponibilizado) e aprenda mais sobre as ferramentas de Devops.
