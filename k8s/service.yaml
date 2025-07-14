@@ -1,14 +1,13 @@
-apiVersion: v1                   # Versão da API
-kind: Service                    # Tipo de recurso: Service
+apiVersion: v1
+kind: Service
 metadata:
-  name: backend                  # Nome do Service (usado para acessar o backend internamente no cluster)
-
+  name: backend
 spec:
+  type: NodePort
   selector:
-    app: backend                 # Seleciona os pods com esse rótulo (deve bater com os labels do Deployment)
+    app: backend
   ports:
-    - protocol: TCP              # Protocolo de rede
-      port: 80                   # Porta exposta pelo Service (usada internamente no cluster)
-      targetPort: 3333           # Porta que o container realmente escuta (a do Node.js backend)
-      nodePort: 30005           
-  type: ClusterIP                # Tipo de Service (ClusterIP = acessível apenas dentro do cluster)
+    - protocol: TCP
+      port: 80
+      targetPort: 3333
+      nodePort: 30005  # Agora sim será usado corretamente
