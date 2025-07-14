@@ -10,4 +10,5 @@ spec:
     - protocol: TCP              # Protocolo de rede
       port: 80                   # Porta exposta pelo Service (usada internamente no cluster)
       targetPort: 3333           # Porta que o container realmente escuta (a do Node.js backend)
+      nodePort: 30005           
   type: ClusterIP                # Tipo de Service (ClusterIP = acessível apenas dentro do cluster)
